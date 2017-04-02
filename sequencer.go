@@ -256,6 +256,9 @@ func (seq *Sequencer) loopMutes(ctx context.Context, hits <-chan Hit) (Mode, err
 				if err := seq.lightMutes(); err != nil {
 					return 0, err
 				}
+				if err := seq.invokeTriggersTrack(); err != nil {
+					return 0, err
+				}
 				continue
 			}
 			if err := seq.toggleMuteFrom(hit); err != nil {
@@ -298,6 +301,9 @@ func (seq *Sequencer) loopPattern(ctx context.Context, hits <-chan Hit) (Mode, e
 					return 0, err
 				}
 				if err := seq.selectPatternTrackFrom(hit); err != nil {
+					return 0, err
+				}
+				if err := seq.invokeTriggersTrack(); err != nil {
 					return 0, err
 				}
 				continue
